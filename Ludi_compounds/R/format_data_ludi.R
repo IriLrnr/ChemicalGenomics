@@ -46,6 +46,7 @@ ludi.compounds <- cbind(ludi.compounds, sig)
 
 # Create a second table with tha significant values only
 ludi.compounds.sig <- subset(ludi.compounds, sig == 1)
+ludi.compounds.nsig <- subset(ludi.compounds, sig == 0)
 
 compounds <- read.csv("./data/Compostos")
 compounds <- as.character(compounds[,1])

@@ -20,7 +20,7 @@ nComp <- nrow(ludi.compounds)
 
 axis.set
 
-manhplot <- ggplot(ludi.compounds, aes(x = comp, y = log2FoldChange)) +
+manhplot <- ggplot(ludi.compounds.nsig, aes(x = comp, y = log2FoldChange)) +
   geom_point(size = 1.2, alpha = 0.7, color = "grey40") +
   geom_point(data = ludi.compounds.sig, size = 1.2, color = "firebrick3", alpha = 0.7, aes(x = comp, y = log2FoldChange)) +
   #geom_hline(yintercept = sig, color = "lightgoldenrod1", linetype = "dashed", size = 0.2) + 
