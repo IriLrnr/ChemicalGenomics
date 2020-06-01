@@ -11,23 +11,32 @@ axis.set <- ludi.compounds %>%
   group_by(comp) %>% 
   summarize(center = (max(comp) + min(comp)) / 2)
 
-ylim <- max(ludi.compounds$log2FoldChange+5)
-ymin <- min(ludi.compounds$log2FoldChange-5)
+ymin
+
+ylim
+
+ylim <- max(ludi.compounds$log2FoldChange) + 5
+ymin <- min(ludi.compounds$log2FoldChange) - 5 
 sig <- 1
 sig2 <- -1
 zero <- 0
 nComp <- nrow(ludi.compounds)
 
-axis.set
+breaks <- seq(-15, 15, 0.5)
+
+labels <- as.character(breaks)
+labels[!(breaks%%2==0)] <- ''
+tick.sizes <- rep(.5, length(breaks))
+tick.sizes[(breaks%%2==0)] <- 1
 
 manhplot <- ggplot(ludi.compounds.nsig, aes(x = comp, y = log2FoldChange)) +
-  geom_point(size = 1.7, alpha = 0.5, color = "darkslateblue") +
-  geom_point(data = ludi.compounds.sig, size = 1.7, color = "firebrick3", alpha = 0.5, aes(x = comp, y = log2FoldChange)) +
+  geom_point(size = 1, alpha = 0.5, color = "darkslateblue") +
+  geom_point(data = ludi.compounds.sig, size = 1, color = "firebrick3", alpha = 0.5, aes(x = comp, y = log2FoldChange)) +
   #geom_hline(yintercept = sig, color = "lightgoldenrod1", linetype = "dashed", size = 0.2) + 
   #geom_hline(yintercept = sig2, color = "lightgoldenrod1", linetype = "dashed", size = 0.2) +
   geom_hline(yintercept = zero, color = "black", linetype = "solid", size = 0.2) + 
   scale_x_continuous(label = compounds, breaks = axis.set$center) +
-  scale_y_continuous(expand = c(0,0), limits = c(ymin, ylim)) +
+  scale_y_continuous(expand = c(0,0), breaks = breaks, labels = labels, limits = c(ymin, ylim)) +
   #ggtitle("") +
   labs(y = "log2 Fold Change") + 
   theme_bw() +
@@ -45,5 +54,5 @@ manhplot <- ggplot(ludi.compounds.nsig, aes(x = comp, y = log2FoldChange)) +
 
 manhplot
 
-ggsave("./plots/manhattan_plot_certo.png", manhplot)
+ggsave("./plots/manhattan_plot_certo.png", manhplot, height = 6)
 
