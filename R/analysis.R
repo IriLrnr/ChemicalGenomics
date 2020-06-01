@@ -43,6 +43,14 @@ for (i in 1:length(meds)) {
 # Rename columns to meds
 colnames(data.t10.named) <- meds
 
+data.t10.1<-data.t10.named[,1:500]
+data.t10.2<-data.t10.named[,501:1000]
+data.t10.3<-data.t10.named[,1001:1500]
+data.t10.4<-data.t10.named[,1501:2000]
+data.t10.5<-data.t10.named[,2001:2500]
+data.t10.6<-data.t10.named[,2501:3000]
+data.t10.7<-data.t10.named[,3001:3356]
+
 write.csv(data.t10.named, "./output/top10_value.csv", row.names = FALSE, quote = FALSE)
 ##################################################################################
 
