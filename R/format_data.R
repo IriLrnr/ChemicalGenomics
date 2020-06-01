@@ -31,4 +31,5 @@ transps <- rownames(data.trans)
 genes <- rownames(data.quanti)
 
 not.in <- subset(transporters, !(V1 %in% transp.hiphop))
-write.csv("./output/not_in_hop.csv", row.names = F, quote = F)
+write.csv(not.in, "./output/not_in_hop.csv", row.names = F, quote = F)
+
