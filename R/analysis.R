@@ -23,16 +23,16 @@ total.enrichement <- sum(n.pergene)
 
 #################### TOP 10 ENRICHED TRANSPORTERS PER MED ###############################
 # Create a table to store the sorted values
-data.ordered <- tibble(.rows = 121)
+data.ordered.inc <- tibble(.rows = 121)
 # Create columns orderd by enrichment, bind to table
 for (i in 1:length(meds)) {
-  order <- as.factor(order(data.trans[,i], decreasing = TRUE))
-  data.ordered <- cbind(data.ordered, order)
+  order.inc <- as.factor(order(data.trans[,i], decreasing = TRUE))
+  data.ordered.inc <- cbind(data.ordered.inc, order.inc)
 }
 # Rename columns to medsz
-colnames(data.ordered) <- meds
+colnames(data.ordered.inc) <- meds
 # Get the top10
-data.top10 <- data.ordered[1:10,]
+data.top10 <- data.ordered.inc[1:10,]
 # Create a new table to "translate" to gene names
 data.t10.named <- tibble(.rows = 10)
 # Fill the table
@@ -56,22 +56,22 @@ write.csv(data.t10.named, "./output/top10_value.csv", row.names = FALSE, quote =
 
 #################### BOTTOM 10 ENRICHED TRANSPORTERS PER MED ###############################
 # Create a table to store the sorted values
-data.ordered <- tibble(.rows = 121)
+data.ordered.dec <- tibble(.rows = 121)
 # Create columns orderd by enrichment, bind to table
 for (i in 1:length(meds)) {
-  order <- as.factor(order(data.trans[,i], decreasing = FALSE))
-  data.ordered <- cbind(data.ordered, order)
+  order.dec <- as.factor(order(data.trans[,i], decreasing = FALSE))
+  data.ordered.dec <- cbind(data.ordered.dec, order.dec)
 }
 # Rename columns to medsz
-colnames(data.ordered) <- meds
+colnames(data.ordered.dec) <- meds
 # Get the top10
-data.bottom10 <- data.ordered[1:10,]
+data.bottom10 <- data.ordered.dec[1:10,]
 # Create a new table to "translate" to gene names
 data.b10.named <- tibble(.rows = 10)
 # Fill the table
 for (i in 1:length(meds)) {
-  names <- paste(genes[data.top10[,i]])
-  data.b10.named <- cbind(data.t10.named, names)  
+  names <- paste(genes[data.bottom10[,i]])
+  data.b10.named <- cbind(data.b10.named, names)  
 }
 # Rename columns to meds
 colnames(data.b10.named) <- meds
