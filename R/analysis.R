@@ -84,30 +84,30 @@ data.b10.5<-data.b10.named[,2001:2500]
 data.b10.6<-data.b10.named[,2501:3000]
 data.b10.7<-data.b10.named[,3001:3356]
 
-write.csv(data.b10.named, "./output/botton10_value.csv", row.names = FALSE, quote = FALSE)
+write.csv(data.b10.named, "./output/bottom10_value.csv", row.names = FALSE, quote = FALSE)
 ##################################################################################
 
-#################### UNIFY TOP AND BOTTON 10 #####################################
-topbotton.1 <- rbind(data.t10.1, data.b10.1)
-write.csv(topbotton.1, "./output/topbotton/topbotton_1.csv", row.names = FALSE, quote = FALSE)
+#################### UNIFY TOP AND bottom 10 #####################################
+topbottom.1 <- rbind(data.t10.1, data.b10.1)
+write.csv(topbottom.1, "./output/topbottom/topbottom_1.csv", row.names = FALSE, quote = FALSE)
 
-topbotton.2 <- rbind(data.t10.2, data.b10.2)
-write.csv(topbotton.2, "./output/topbotton/topbotton_2.csv", row.names = FALSE, quote = FALSE)
+topbottom.2 <- rbind(data.t10.2, data.b10.2)
+write.csv(topbottom.2, "./output/topbottom/topbottom_2.csv", row.names = FALSE, quote = FALSE)
 
-topbotton.3 <- rbind(data.t10.3, data.b10.3)
-write.csv(topbotton.3, "./output/topbotton/topbotton_3.csv", row.names = FALSE, quote = FALSE)
+topbottom.3 <- rbind(data.t10.3, data.b10.3)
+write.csv(topbottom.3, "./output/topbottom/topbottom_3.csv", row.names = FALSE, quote = FALSE)
 
-topbotton.4 <- rbind(data.t10.4, data.b10.4)
-write.csv(topbotton.4, "./output/topbotton/topbotton_4.csv", row.names = FALSE, quote = FALSE)
+topbottom.4 <- rbind(data.t10.4, data.b10.4)
+write.csv(topbottom.4, "./output/topbottom/topbottom_4.csv", row.names = FALSE, quote = FALSE)
 
-topbotton.5 <- rbind(data.t10.5, data.b10.5)
-write.csv(topbotton.5, "./output/topbotton/topbotton_5.csv", row.names = FALSE, quote = FALSE)
+topbottom.5 <- rbind(data.t10.5, data.b10.5)
+write.csv(topbottom.5, "./output/topbottom/topbottom_5.csv", row.names = FALSE, quote = FALSE)
 
-topbotton.6 <- rbind(data.t10.6, data.b10.6)
-write.csv(topbotton.6, "./output/topbotton/topbotton_6.csv", row.names = FALSE, quote = FALSE)
+topbottom.6 <- rbind(data.t10.6, data.b10.6)
+write.csv(topbottom.6, "./output/topbottom/topbottom_6.csv", row.names = FALSE, quote = FALSE)
 
-topbotton.7 <- rbind(data.t10.7, data.b10.7)
-write.csv(topbotton.7, "./output/topbotton/topbotton_7.csv", row.names = FALSE, quote = FALSE)
+topbottom.7 <- rbind(data.t10.7, data.b10.7)
+write.csv(topbottom.7, "./output/topbottom/topbottom_7.csv", row.names = FALSE, quote = FALSE)
 ##################################################################################
 #################### TOP 10 ENRICHED GENES PER MED ###############################
 # Create a table to store the sorted values
