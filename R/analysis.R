@@ -46,6 +46,30 @@ colnames(data.t10.named) <- meds
 write.csv(data.t10.named, "./output/top10_value.csv", row.names = FALSE, quote = FALSE)
 ##################################################################################
 
+#################### BOTTOM 10 ENRICHED TRANSPORTERS PER MED ###############################
+# Create a table to store the sorted values
+data.ordered <- tibble(.rows = 121)
+# Create columns orderd by enrichment, bind to table
+for (i in 1:length(meds)) {
+  order <- as.factor(order(data.trans[,i], decreasing = FALSE))
+  data.ordered <- cbind(data.ordered, order)
+}
+# Rename columns to medsz
+colnames(data.ordered) <- meds
+# Get the top10
+data.bottom10 <- data.ordered[1:10,]
+# Create a new table to "translate" to gene names
+data.b10.named <- tibble(.rows = 10)
+# Fill the table
+for (i in 1:length(meds)) {
+  names <- paste(genes[data.top10[,i]])
+  data.b10.named <- cbind(data.t10.named, names)  
+}
+# Rename columns to meds
+colnames(data.b10.named) <- meds
+
+write.csv(data.b10.named, "./output/botton10_value.csv", row.names = FALSE, quote = FALSE)
+##################################################################################
 
 #################### TOP 10 ENRICHED GENES PER MED ###############################
 # Create a table to store the sorted values
