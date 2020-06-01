@@ -18,8 +18,6 @@ n.pergene <- apply(X = data.tf, MARGIN = 1, FUN = sum)
 n.permed <- apply(X = data.tf, MARGIN = 2, FUN = sum)
 # Total of positive relations
 total.enrichement <- sum(n.pergene)
-
-total.enrichement
 ##################################################################################
 
 
@@ -39,7 +37,7 @@ data.top10 <- data.ordered[1:10,]
 data.t10.named <- tibble(.rows = 10)
 # Fill the table
 for (i in 1:length(meds)) {
-  names <- paste(genes[data.top10[,i]], "(", data.trans[data.top10[,i],i], ")")
+  names <- paste(genes[data.top10[,i]])
   data.t10.named <- cbind(data.t10.named, names)  
 }
 # Rename columns to meds
@@ -84,7 +82,6 @@ sum(transporters.tf)
 
 write.csv(n.transporters, "./output/transporter_frequency.csv", row.names = TRUE, quote = FALSE)
 ##################################################################################
-
 
 ##################### 50 MOST FREQUENTLY ENRICHED GENES ##########################
 # Create a table of occurences (in the top10 table) for each gene
