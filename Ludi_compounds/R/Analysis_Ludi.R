@@ -37,8 +37,8 @@ manhplot <- ggplot(ludi.compounds.nsig, aes(x = comp, y = log2FoldChange)) +
   geom_hline(yintercept = zero, color = "black", linetype = "solid", size = 0.2) + 
   scale_x_continuous(label = compounds, breaks = axis.set$center) +
   scale_y_continuous(expand = c(0,0), breaks = breaks, labels = labels, limits = c(ymin, ylim)) +
-  #ggtitle("") +
-  labs(y = "log2 Fold Change") + 
+  ggtitle("Log2 FoldChange by compound") +
+  labs(y = "Efluxers                          Influxers") + 
   theme_bw() +
   theme(
     legend.position = "none",
@@ -48,11 +48,11 @@ manhplot <- ggplot(ludi.compounds.nsig, aes(x = comp, y = log2FoldChange)) +
     panel.grid.minor.x = element_blank(),
     axis.text.x = element_text(angle = 90, size = 8, vjust = 0.5, hjust=1),
     axis.title.y = element_text(color="grey48", size=10),
-    #title = element_text(hjust = 0.5, color = "grey40", size = 10),
+    title = element_text(hjust = 0.5, color = "grey40", size = 10),
     plot.margin = margin(t = 3, r = 5, b = 3, l = 3, unit = "pt")
   )
 
 manhplot
 
-ggsave("./plots/manhattan_plot_certo.png", manhplot, height = 6)
+ggsave("./plots/manhattan_plot_certo.png", manhplot, height = 6, width = 5)
 
