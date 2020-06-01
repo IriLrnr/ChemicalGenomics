@@ -11,7 +11,7 @@ transporters <-read.csv("./data/raw/transporters.csv", header = FALSE, sep=",", 
 data.quanti <- data.raw
 
 # Have to change name of the transporters column
-data.trans <- tibble(.rows = 131)
+data.trans <- tibble(.rows = 130)
 
 for (i in 1:nrow(transporters)) {
   transp <- subset(data.quanti, X == paste(transporters[i,]))
@@ -20,6 +20,7 @@ for (i in 1:nrow(transporters)) {
 
 # Transform first row in line names in data.trans
 rownames(data.trans) <- data.trans[,1]
+transp.hiphop <- rownames(data.trans);
 data.trans <- subset(data.trans, select = -X)
 # Transform first row in line names in data.quanti
 rownames(data.quanti) <- data.quanti[,1]
@@ -29,3 +30,11 @@ meds <- colnames(data.trans)
 transps <- rownames(data.trans)
 genes <- rownames(data.quanti)
 
+not.in <- subset(transporters, !(V1 %in% transp.hiphop))
+write.csv("./output/not_in_hop.csv", row.names = F, quote = F)
+
+for (i in 1:nrow(transporters)) {
+  if (transporters[1,i])
+  not.in <- subset(data.quanti, X == paste(transporters[i,]))
+  data.trans <- rbind(data.trans, transp)
+}
