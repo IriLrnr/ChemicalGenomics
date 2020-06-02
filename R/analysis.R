@@ -1,5 +1,3 @@
-library(epitools)
-
 # include format_data
 source("./R/format_data.R")
 
@@ -10,113 +8,32 @@ data.trans[is.na(data.trans)] <- 0
 data.quanti[is.na(data.quanti)] <- 0
 # save data
 data.tf <- data.trans
-
-### CUT 0
-# Transform in presence-absence table (TRUE or FALSE)
-data.tf <- data.tf[,] > 0
-# Pra cada gene, quantos fármacos enriquecem
-n.pergene <- apply(X = data.tf, MARGIN = 1, FUN = sum)
-# Numero de genes enriquecidos por farmaci
-n.permed <- apply(X = data.tf, MARGIN = 2, FUN = sum)
-# Total of positive relations
-total.enrichement <- sum(n.pergene)
 ##################################################################################
 
-
-#################### TOP 10 ENRICHED TRANSPORTERS PER MED ###############################
+#################### TOP AND BOTTOM 10 ENRICHED TRANSPORTERS PER MED ###############################
 # Create a table to store the sorted values
-data.ordered.inc <- tibble(.rows = 121)
+data.ordered <- tibble(.rows = 121)
 # Create columns orderd by enrichment, bind to table
 for (i in 1:length(meds)) {
-  order.inc <- as.factor(order(data.trans[,i], decreasing = TRUE))
-  data.ordered.inc <- cbind(data.ordered.inc, order.inc)
+  order <- as.factor(order(data.trans[,i], decreasing = TRUE))
+  data.ordered <- cbind(data.ordered, order)
 }
 # Rename columns to medsz
-colnames(data.ordered.inc) <- meds
+colnames(data.ordered) <- meds
 # Get the top10
-data.top10 <- data.ordered.inc[1:10,]
+trans.tb10 <- rbind(data.ordered[1:10,], data.ordered[112:121,])
 # Create a new table to "translate" to gene names
-data.t10.named <- tibble(.rows = 10)
+trans.tb10.named <- tibble(.rows = 20)
 # Fill the table
 for (i in 1:length(meds)) {
-  names <- paste(genes[data.top10[,i]])
-  data.t10.named <- cbind(data.t10.named, names)  
+  names <- paste(genes[trans.tb10[,i]])
+  trans.tb10.named <- cbind(trans.tb10.named, names)  
 }
 # Rename columns to meds
-colnames(data.t10.named) <- meds
-
-
-data.t10.1<-data.t10.named[,1:500]
-data.t10.2<-data.t10.named[,501:1000]
-data.t10.3<-data.t10.named[,1001:1500]
-data.t10.4<-data.t10.named[,1501:2000]
-data.t10.5<-data.t10.named[,2001:2500]
-data.t10.6<-data.t10.named[,2501:3000]
-data.t10.7<-data.t10.named[,3001:3356]
-
-write.csv(data.t10.named, "./output/top10_value.csv", row.names = FALSE, quote = FALSE)
+colnames(trans.tb10.named) <- meds
 ##################################################################################
 
-#################### BOTTOM 10 ENRICHED TRANSPORTERS PER MED ###############################
-# Create a table to store the sorted values
-data.ordered.dec <- tibble(.rows = 121)
-# Create columns orderd by enrichment, bind to table
-for (i in 1:length(meds)) {
-  order.dec <- as.factor(order(data.trans[,i], decreasing = FALSE))
-  data.ordered.dec <- cbind(data.ordered.dec, order.dec)
-}
-# Rename columns to medsz
-colnames(data.ordered.dec) <- meds
-# Get the top10
-data.bottom10 <- data.ordered.dec[1:10,]
-# Create a new table to "translate" to gene names
-data.b10.named <- tibble(.rows = 10)
-# Fill the table
-for (i in 1:length(meds)) {
-  names <- paste(genes[data.bottom10[,i]])
-  data.b10.named <- cbind(data.b10.named, names)  
-}
-# Rename columns to meds
-colnames(data.b10.named) <- meds
-
-data.b10.1<-data.b10.named[,1:500]
-data.b10.2<-data.b10.named[,501:1000]
-data.b10.3<-data.b10.named[,1001:1500]
-data.b10.4<-data.b10.named[,1501:2000]
-data.b10.5<-data.b10.named[,2001:2500]
-data.b10.6<-data.b10.named[,2501:3000]
-data.b10.7<-data.b10.named[,3001:3356]
-
-write.csv(data.b10.named, "./output/bottom10_value.csv", row.names = FALSE, quote = FALSE)
-##################################################################################
-
-#################### UNIFY TOP AND bottom 10 #####################################
-topbottom.1 <- rbind(data.t10.1, data.b10.1)
-write.csv(topbottom.1, "./output/topbottom/topbottom_1.csv", row.names = FALSE, quote = FALSE)
-
-topbottom.2 <- rbind(data.t10.2, data.b10.2)
-write.csv(topbottom.2, "./output/topbottom/topbottom_2.csv", row.names = FALSE, quote = FALSE)
-
-topbottom.3 <- rbind(data.t10.3, data.b10.3)
-write.csv(topbottom.3, "./output/topbottom/topbottom_3.csv", row.names = FALSE, quote = FALSE)
-
-topbottom.4 <- rbind(data.t10.4, data.b10.4)
-write.csv(topbottom.4, "./output/topbottom/topbottom_4.csv", row.names = FALSE, quote = FALSE)
-
-topbottom.5 <- rbind(data.t10.5, data.b10.5)
-write.csv(topbottom.5, "./output/topbottom/topbottom_5.csv", row.names = FALSE, quote = FALSE)
-
-topbottom.6 <- rbind(data.t10.6, data.b10.6)
-write.csv(topbottom.6, "./output/topbottom/topbottom_6.csv", row.names = FALSE, quote = FALSE)
-
-topbottom.7 <- rbind(data.t10.7, data.b10.7)
-write.csv(topbottom.7, "./output/topbottom/topbottom_7.csv", row.names = FALSE, quote = FALSE)
-
-tb10 <- rbind(data.t10.named, data.b10.named)
-tb5 <- tb10[-(6:15),]
-
-##################################################################################
-#################### TOP 10 ENRICHED GENES PER MED ###############################
+#################### TOP AND BOTTOM 10 ENRICHED GENES PER MED ###############################
 # Create a table to store the sorted values
 data.ordered <- tibble(.rows = 4810)
 # Create columns orderd by enrichment, bind to table
@@ -127,21 +44,37 @@ for (i in 1:length(meds)) {
 # Rename columns to medsz
 colnames(data.ordered) <- meds
 # Get the top10
-data.top10 <- data.ordered[1:10,]
+data.tb10 <- rbind(data.ordered[1:10,], data.ordered[3347:3356,])
 # Create a new table to "translate" to gene names
-data.t10.named <- tibble(.rows = 10)
+data.tb10.named <- tibble(.rows = 20)
 # Fill the table
 for (i in 1:length(meds)) {
-  names <- paste(genes[data.top10[,i]])
-  data.t10.named <- cbind(data.t10.named, names)  
+  names <- paste(genes[data.tb10[,i]])
+  data.tb10.named <- cbind(data.tb10.named, names)  
 }
 # Rename columns to meds
-colnames(data.t10.named) <- meds
+colnames(data.tb10.named) <- meds
+
+topbottom.1<-data.tb10.named[,1:500]
+topbottom.2<-data.tb10.named[,501:1000]
+topbottom.3<-data.tb10.named[,1001:1500]
+topbottom.4<-data.tb10.named[,1501:2000]
+topbottom.5<-data.tb10.named[,2001:2500]
+topbottom.6<-data.tb10.named[,2501:3000]
+topbottom.7<-data.tb10.named[,3001:3356]
+
+write.csv(topbottom.1, "./output/topbottom/topbottom_1.csv", row.names = FALSE, quote = FALSE)
+write.csv(topbottom.2, "./output/topbottom/topbottom_2.csv", row.names = FALSE, quote = FALSE)
+write.csv(topbottom.3, "./output/topbottom/topbottom_3.csv", row.names = FALSE, quote = FALSE)
+write.csv(topbottom.4, "./output/topbottom/topbottom_4.csv", row.names = FALSE, quote = FALSE)
+write.csv(topbottom.5, "./output/topbottom/topbottom_5.csv", row.names = FALSE, quote = FALSE)
+write.csv(topbottom.6, "./output/topbottom/topbottom_6.csv", row.names = FALSE, quote = FALSE)
+write.csv(topbottom.7, "./output/topbottom/topbottom_7.csv", row.names = FALSE, quote = FALSE)
 
 n.transporters <- vector()
 #subset the transporters in the top10 table for the whole database
 for (i in meds) {
-  inters <- intersect(data.t10.named[,i], transps)
+  inters <- intersect(data.tb10.named[,i], transps)
   n.transporters[i] <- length(inters)
 }
 
@@ -154,7 +87,7 @@ write.csv(n.transporters, "./output/transporter_frequency.csv", row.names = TRUE
 
 ##################### 50 MOST FREQUENTLY ENRICHED GENES ##########################
 # Create a table of occurences (in the top10 table) for each gene
-occurences <- table(unlist(data.top10))
+occurences <- table(unlist(data.tb10))
 # Order the occurences to get the 50 genes that appear the most
 ordered.occurence <- order(occurences, decreasing = TRUE)
 # Sort occurences to get the frequencies
@@ -176,21 +109,15 @@ write.csv(top50.names.freq, "./output/freqtop50genes_trans.csv", row.names = FAL
 ####################################################################################
 
 ############################### RATIOS #############################################
-tb10.freq <- as.data.frame(table(unlist(tb10)))
+tb10.freq <- as.data.frame(table(unlist(data.tb10.named)))
 transps.freq.10 <- subset(tb10.freq, Var1 %in% transps)
-sum (transps.freq.10$Freq)
+sum (transps.freq.10$Freq) / sum (tb10.freq$Freq)
 
-tb5.freq <- as.data.frame(table(unlist(tb5)))
-transps.freq.5 <- subset(tb5.freq, Var1 %in% transps)
-sum (transps.freq.5$Freq)
+tx.freq <- as.data.frame(table(unlist(data.tb10.named[1:1,])))
+transps.freq.tx <- subset(tx.freq, Var1 %in% transps)
+sum (transps.freq.tx$Freq) / sum(tx.freq$Freq)
 
-tx.freq <- as.data.frame(table(unlist(data.t10.named[1:5,])))
-transps.freq.tx <- subset(t10.freq, Var1 %in% transps)
-sum (transps.freq.tx$Freq)
-
-bx.freq <- as.data.frame(table(unlist(data.b10.named[1:5,])))
-transps.freq.bx <- subset(b10.freq, Var1 %in% transps)
-sum (transps.freq.bx$Freq)
+bx.freq <- as.data.frame(table(unlist(data.tb10.named[29:20,])))
+transps.freq.bx <- subset(bx.freq, Var1 %in% transps)
+sum (transps.freq.bx$Freq) / sum(bx.freq$Freq)
 ###################################################################################
-
-
