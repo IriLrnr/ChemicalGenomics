@@ -177,5 +177,20 @@ write.csv(top50.names.freq, "./output/freqtop50genes_trans.csv", row.names = FAL
 
 ############################### RATIOS #############################################
 tb10.freq <- as.data.frame(table(unlist(tb10)))
+transps.freq.10 <- subset(tb10.freq, Var1 %in% transps)
+sum (transps.freq.10$Freq)
 
+tb5.freq <- as.data.frame(table(unlist(tb5)))
+transps.freq.5 <- subset(tb5.freq, Var1 %in% transps)
+sum (transps.freq.5$Freq)
+
+tx.freq <- as.data.frame(table(unlist(data.t10.named[1:5,])))
+transps.freq.tx <- subset(t10.freq, Var1 %in% transps)
+sum (transps.freq.tx$Freq)
+
+bx.freq <- as.data.frame(table(unlist(data.b10.named[1:5,])))
+transps.freq.bx <- subset(b10.freq, Var1 %in% transps)
+sum (transps.freq.bx$Freq)
 ###################################################################################
+
+
