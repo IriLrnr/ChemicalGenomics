@@ -43,6 +43,7 @@ for (i in 1:length(meds)) {
 # Rename columns to meds
 colnames(data.t10.named) <- meds
 
+
 data.t10.1<-data.t10.named[,1:500]
 data.t10.2<-data.t10.named[,501:1000]
 data.t10.3<-data.t10.named[,1001:1500]
@@ -108,6 +109,10 @@ write.csv(topbottom.6, "./output/topbottom/topbottom_6.csv", row.names = FALSE, 
 
 topbottom.7 <- rbind(data.t10.7, data.b10.7)
 write.csv(topbottom.7, "./output/topbottom/topbottom_7.csv", row.names = FALSE, quote = FALSE)
+
+tb10 <- rbind(data.t10.named, data.b10.named)
+tb5 <- tb10[-(6:15),]
+
 ##################################################################################
 #################### TOP 10 ENRICHED GENES PER MED ###############################
 # Create a table to store the sorted values
