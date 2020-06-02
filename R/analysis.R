@@ -1,3 +1,5 @@
+library(epitools)
+
 # include format_data
 source("./R/format_data.R")
 
@@ -173,3 +175,7 @@ colnames(top50.names.freq) <- c("gene", "frequency")
 write.csv(top50.names.freq, "./output/freqtop50genes_trans.csv", row.names = FALSE, quote = FALSE)
 ####################################################################################
 
+############################### RATIOS #############################################
+tb10.freq <- as.data.frame(table(unlist(tb10)))
+
+###################################################################################
