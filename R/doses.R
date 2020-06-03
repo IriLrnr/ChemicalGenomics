@@ -1,5 +1,5 @@
 # Load used libraries
-library(xlsx)
+library(openxlsx)
 
 # Source analysis to make the tables
 source("./R/analysis.R")
