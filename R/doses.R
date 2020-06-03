@@ -1,7 +1,10 @@
+library(openxlsx)
+
 source("./R/analysis.R")
 
 compound.table <- read.csv("./data/raw/compound_table.csv", header = T, sep = ";")
 
+###################### DIFFERENT DOSES ANALYSIS ############################
 name.freq <- as.data.frame(table(compound.table$name))
 name.freq <- subset(name.freq, Freq > 1)
 
@@ -21,7 +24,13 @@ doses <- doses[order(doses$name, doses$inchikey, doses$IUPAC.name, doses$conc),]
 doses.freq <- subset(as.data.frame(table(doses$name)), Freq > 1)
 
 trans.rep <- subset(data.trans, select = c(paste(doses$Screen.ID)))
+#############################################################################
 
-stat <- do.call(cbind, lapply(trans.rep, summary))
+####################### MERGE COMPOUND_TABLE AND TOP10 ######################
+transpose.t10 <- cbind(rownames(transpose.t10), t(data.tb10.named[1:10,]))
+colnames(transpose.t10)[1] <- c("Screen.ID")
 
-write.csv(stat, "./output/doses/doses_statistics.csv", row.names = T)
+compound.t10<- merge(compound.table[,1:4], transpose.t10, by="Screen.ID")
+compound.t10 <- compound.t10[order(compound.t10$name, compound.t10$conc),]
+#############################################################################
+
