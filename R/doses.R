@@ -47,7 +47,7 @@ warm1Style <- createStyle(fontColour = "black", bgFill = "firebrick")
 
 for(i in 1:nrow(transporters)){
   conditionalFormatting(wb, "Compound_t10", cols = 5:14,
-                        rows = 1:nrow(compound.t10), rule = paste("=", paste(transporters[i,1]), sep = ""), style = warm1Style,
+                        rows = 1:nrow(compound.t10), rule = paste("=", transporters[i,1], sep = ""), style = warm1Style,
                         type = "contains")
 }
 saveWorkbook(wb, "./output/compounds_t10.xlsx", overwrite = TRUE)
