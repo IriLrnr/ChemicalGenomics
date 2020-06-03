@@ -1,4 +1,4 @@
-source("analysis.R")
+source("./R/analysis.R")
 
 compound.table <- read.csv("./data/raw/compound_table.csv", header = T, sep = ";")
 
