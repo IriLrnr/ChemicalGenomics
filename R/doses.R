@@ -1,7 +1,10 @@
+# Load used libraries
 library(openxlsx)
 
+# Source analysis to make the tables
 source("./R/analysis.R")
 
+# 
 compound.table <- read.csv("./data/raw/compound_table.csv", header = T, sep = ";")
 
 ###################### DIFFERENT DOSES ANALYSIS ############################
@@ -27,10 +30,12 @@ trans.rep <- subset(data.trans, select = c(paste(doses$Screen.ID)))
 #############################################################################
 
 ####################### MERGE COMPOUND_TABLE AND TOP10 ######################
-transpose.t10 <- cbind(rownames(transpose.t10), t(data.tb10.named[1:10,]))
+transpose.t10 <- cbind(colnames(data.tb10.named), t(data.tb10.named[1:10,]))
 colnames(transpose.t10)[1] <- c("Screen.ID")
 
 compound.t10<- merge(compound.table[,1:4], transpose.t10, by="Screen.ID")
 compound.t10 <- compound.t10[order(compound.t10$name, compound.t10$conc),]
+
+# Print with colors to xlsx for Bessie
 #############################################################################
 
