@@ -6,3 +6,4 @@
 *.xlsx
 data/raw/fitness_defect_matrix_hom.txt
 *.csv
+.~lock*
