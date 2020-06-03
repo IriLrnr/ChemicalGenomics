@@ -3,17 +3,13 @@
 library(ggplot2)
 
 # Transform compound's files data into object ludi.compounds and ludi.compounds.sig 
-source("./R/format_data_ludi.R")
-
+source("./Ludi_compounds/R/format_data_ludi.R")
+    
 # plot manhattan
 # Adapted code for manhattan plot
 axis.set <- ludi.compounds %>% 
   group_by(comp) %>% 
   summarize(center = (max(comp) + min(comp)) / 2)
-
-ymin
-
-ylim
 
 ylim <- max(ludi.compounds$log2FoldChange) + 5
 ymin <- min(ludi.compounds$log2FoldChange) - 5 
@@ -54,5 +50,5 @@ manhplot <- ggplot(ludi.compounds.nsig, aes(x = comp, y = log2FoldChange)) +
 
 manhplot
 
-ggsave("./plots/manhattan_plot.png", manhplot, height = 6, width = 5)
+ggsave("./Ludi_compounds/plots/manhattan_plot.png", manhplot, height = 6, width = 5)
 

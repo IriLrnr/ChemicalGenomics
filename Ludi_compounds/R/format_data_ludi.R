@@ -2,7 +2,7 @@ library(tidyr)
 library(dplyr)
 
 # Set directory to compound file
-setwd("./data/compound_files")
+setwd("./Ludi_compounds/data/compound_files")
 file.names <- dir()
 
 # Create table named ludi.compounds, fill with info from the coumpound tables
@@ -21,15 +21,16 @@ for (i in 1:length(file.names)) {
 
 gsub(",", ".", ludi.compounds)
 
-setwd("../../")
+setwd("../../../")
 
 # Transform numbers in scientif form to doubles
 ludi.compounds[,2] <-as.double(ludi.compounds[,2])
-
 # Ignore lines with NA values for the numeric columns
-ludi.compounds <- subset(ludi.compounds, log2FoldChange != is.na(log2FoldChange) &
-                           pvalue != is.na(pvalue) &
-                           padj != is.na(padj))
+ludi.compounds <- subset(ludi.compounds, !is.na(log2FoldChange) &
+                           !is.na(pvalue) &
+                           !is.na(padj))
+zeros <- subset(ludi.compounds, ludi.compounds$padj == 0 | ludi.compounds$pvalue == 0)
+
 
 # Create a vector for significance
 sig <- vector()
@@ -48,7 +49,7 @@ ludi.compounds <- cbind(ludi.compounds, sig)
 ludi.compounds.sig <- subset(ludi.compounds, sig == 1)
 ludi.compounds.nsig <- subset(ludi.compounds, sig == 0)
 
-compounds <- read.csv("./data/Compostos")
+compounds <- read.csv("./Ludi_compounds/data/Compostos")
 compounds <- as.character(compounds[,1])
 
 compounds[6] <- "Captan"
@@ -57,3 +58,4 @@ compounds[11] <- "Difenoconazole"
 compounds[13] <- "Epoxiconazole"
 compounds[15] <- "Iprobenfos"
 compounds[20] <- "Tebuconazole"
+
