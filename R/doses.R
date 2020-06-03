@@ -12,15 +12,16 @@ IUPAC.name.freq <- as.data.frame(table(compound.table$IUPAC.name))
 IUPAC.name.freq <- subset(IUPAC.name.freq, Freq > 1)
 IUPAC.name.freq <- IUPAC.name.freq[-1,]
 
-PCID.freq <- as.data.frame(table(compound.table$PCID))
-PCID.freq <- subset(PCID.freq, Freq > 1)
-PCID.freq <- PCID.freq[-1,]
+doses <- subset(compound.table, compound.table$name %in% name.freq$Var1 &
+                                compound.table$inchikey %in% inchikey.freq$Var1 &
+                                compound.table$IUPAC.name %in% IUPAC.name.freq$Var1,
+                select = c("Screen.ID", "name", "conc", "unit", "inchikey", "IUPAC.name"))
 
+doses <- doses[order(doses$name, doses$inchikey, doses$IUPAC.name, doses$conc),]
+doses.freq <- subset(as.data.frame(table(doses$name)), Freq > 1)
 
-doses <- subset(compound.table, compound.table$name %in% name.freq$Var1 |
-                                compound.table$inchikey %in% inchikey.freq$Var1 |
-                                compound.table$IUPAC.name %in% IUPAC.name.freq$Var1 |
-                                compound.table$PCID %in% PCID.freq$Var1, 
-                select = c("Screen.ID", "name", "conc", "unit", "PCID", "inchikey", "IUPAC.name"))
+trans.rep <- subset(data.trans, select = c(paste(doses$Screen.ID)))
 
-doses <- doses[order(doses$name, doses$inchikey, doses$PCID, doses$IUPAC.name),]
+stat <- do.call(cbind, lapply(trans.rep, summary))
+
+write.csv(stat, "./output/doses/doses_statistics.csv", row.names = T)
