@@ -1,5 +1,5 @@
 # Load used libraries
-library(openxlsx)
+library(xlsx)
 
 # Source analysis to make the tables
 source("./R/analysis.R")
@@ -30,29 +30,50 @@ trans.rep <- subset(data.trans, select = c(paste(doses$Screen.ID)))
 #############################################################################
 
 ####################### MERGE COMPOUND_TABLE AND TOP10 ######################
-transpose.t10 <- cbind(colnames(data.tb10.named), t(data.tb10.named[1:10,]))
+t10 <- as.data.frame(data.tb10.named[1:10,])
+
+tf.t10 <- tibble(.rows = 10)
+line <- vector()
+for (i in 1:ncol(t10)) {
+  line <- t10[[i]] %in% transporters$V1
+  tf.t10 <- cbind(tf.t10, line)
+}
+
+sum.t <-as.data.frame(as.factor(apply(tf.t10, MARGIN = 2, FUN = sum)))
+colnames(sum.t) <- c("t")
+transpose.t10 <- data.frame()
+transpose.t10 <- cbind(colnames(t10), t(t10))
 colnames(transpose.t10)[1] <- c("Screen.ID")
 
 compound.t10<- merge(compound.table[,1:4], transpose.t10, by="Screen.ID")
 compound.t10 <- compound.t10[order(compound.t10$name, compound.t10$conc),]
+compound.t10 <- cbind(compound.t10, sum.t)
 
 # Print with colors to xlsx for Bessie
-wb <- createWorkbook()
-#add a worksheet to the workbook
-addWorksheet(wb, "Compound_t10", gridLines = TRUE)
-# write my analysis into the worksheet of the workbook, 
-writeData(wb, "Compound_t10", compound.t10)
-# here search for the respective HEX color-code and assign a name to the style
-warm1Style <- createStyle(fontColour = "black", bgFill = "firebrick")
-
-for(i in 1:nrow(transporters)){
-  conditionalFormatting(wb, "Compound_t10", cols = 5:14,
-                        rows = 1:nrow(compound.t10), rule = paste("=", transporters[i,1], sep = ""), style = warm1Style,
-                        type = "contains")
+cols <- length(compound.t10)
+sheetname <- "coumpound_t10"
+write.xlsx(compound.t10, "./out_tables.xlsx", sheetName=sheetname)
+file <- "out_tables.xlsx"
+# but we want to highlight cells if value is equal to a transporter
+wb <- loadWorkbook(file)              # load workbook
+fo <- Fill(foregroundColor="lightgreen")   # create fill object
+cs <- CellStyle(wb, fill=fo)        # create cell style
+sheets <- getSheets(wb)               # get all sheets
+sheet <- sheets[[sheetname]]          # get specific sheet
+# get rows
+rows <- getRows(sheet, rowIndex=2:nrow(compound.t10)+1)
+# 1st row is headers
+# get cells
+cells <- getCells(rows, colIndex = 6:cols)
+# extract the cell value
+values <- lapply(cells, getCellValue)
+highlight <- NULL
+for (i in names(values)) {
+  x <- as.factor(values[i])
+  if (x %in% transporters$V1 && !is.na(x)) {
+    highlight <- c(highlight, i)
+  }     
 }
-saveWorkbook(wb, "./output/compounds_t10.xlsx", overwrite = TRUE)
-
-# account the condition where "Significantly Warmer" is contained in a cell,
-# then apply the respective style to it (in this case, warm1Style)
-#############################################################################
-
+lapply(names(cells[highlight]), function(i) setCellStyle(cells[[i]], cs))
+saveWorkbook(wb, file)
+#####################################################################
