@@ -10,6 +10,7 @@ transporters <-read.csv("./data/raw/transporters.csv", header = FALSE, sep= ",",
 # Save raw
 data.quanti <- data.raw
 
+
 # Have to change name of the transporters column
 data.trans <- filter(data.raw, (X %in% transporters$V1))
 

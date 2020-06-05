@@ -15,7 +15,7 @@ data.tf <- data.trans
 data.ordered <- tibble(.rows = 121)
 # Create columns orderd by enrichment, bind to table
 for (i in 1:length(meds)) {
-  order <- as.factor(order(data.trans[,i], decreasing = TRUE))
+  order <- as.factor(order(data.trans[,i], decreasing = FALSE))
   data.ordered <- cbind(data.ordered, order)
 }
 # Rename columns to medsz

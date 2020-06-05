@@ -35,7 +35,7 @@ t10 <- as.data.frame(data.tb10.named[1:10,])
 tf.t10 <- tibble(.rows = 10)
 line <- vector()
 for (i in 1:ncol(t10)) {
-  line <- t10[[i]] %in% transporters$V1
+  line <- t10[,i] %in% transporters$V1
   tf.t10 <- cbind(tf.t10, line)
 }
 
