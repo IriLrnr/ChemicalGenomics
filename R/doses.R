@@ -63,8 +63,8 @@ compound.t10 <- merge(compound.t10, sum.table, by = "Screen.ID")
 # Print with colors to xlsx for Bessie
 cols <- length(compound.t10) - 1
 sheetname <- "coumpound_t10"
-write.xlsx(compound.t10, "./out_tables.xlsx", sheetName=sheetname, row.names = F)
-file <- "out_tables.xlsx"
+write.xlsx(compound.t10, "./out_tables_correct.xlsx", sheetName=sheetname, row.names = F)
+file <- "out_tables_correct.xlsx"
 # but we want to highlight cells if value is equal to a transporter
 wb <- loadWorkbook(file)              # load workbook
 fo <- Fill(foregroundColor="lightgreen")   # create fill object
@@ -93,8 +93,5 @@ saveWorkbook(wb, file)
 multiple.doses <- subset(compound.t10, compound.t10$name %in% doses$name, select = c("Screen.ID", "name", "conc", "t"))
 multiple.doses <- multiple.doses[order(multiple.doses$name, multiple.doses$conc),]
 sheetname = "multiple_doses"
-write.xlsx(multiple.doses, "./out_tables.xlsx", sheetName=sheetname, row.names = F, append = TRUE)
+write.xlsx(multiple.doses, "./out_tables_correct.xlsx", sheetName=sheetname, row.names = F, append = TRUE)
 #####################################################################
-
-
-
