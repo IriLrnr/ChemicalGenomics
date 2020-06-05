@@ -10,7 +10,7 @@ data.quanti[is.na(data.quanti)] <- 0
 data.tf <- data.trans
 ##################################################################################
 
-#################### TOP AND BOTTOM 10 ENRICHED TRANSPORTERS PER MED ###############################
+############### TOP AND BOTTOM 10 ENRICHED TRANSPORTERS PER MED ##################
 # Create a table to store the sorted values
 data.ordered <- tibble(.rows = 121)
 # Create columns orderd by enrichment, bind to table
@@ -33,7 +33,7 @@ for (i in 1:length(meds)) {
 colnames(trans.tb10.named) <- meds
 ##################################################################################
 
-#################### TOP AND BOTTOM 10 ENRICHED GENES PER MED ###############################
+############## TOP AND BOTTOM 10 ENRICHED GENES PER MED ##########################
 # Create a table to store the sorted values
 data.ordered <- tibble(.rows = 4810)
 # Create columns orderd by enrichment, bind to table
@@ -108,7 +108,7 @@ colnames(top50.names.freq) <- c("gene", "frequency")
 write.csv(top50.names.freq, "./output/freqtop50genes_trans.csv", row.names = FALSE, quote = FALSE)
 ####################################################################################
 
-############################### RATIOS #############################################
+############################### RATIOS ##########################################
 tb10.freq <- as.data.frame(table(unlist(data.tb10.named)))
 transps.freq.10 <- subset(tb10.freq, Var1 %in% transps)
 sum (transps.freq.10$Freq) / sum (tb10.freq$Freq)
