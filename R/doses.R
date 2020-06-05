@@ -7,7 +7,7 @@ source("./R/analysis.R")
 # Read coumpound information from HipHop library
 compound.table <- read.csv("./data/raw/compound_table.csv", header = T, sep = ";")
 
-###################### DIFFERENT DOSES ANALYSIS ############################
+###################### DOSES TABLE ############################
 name.freq <- as.data.frame(table(compound.table$name))
 name.freq <- subset(name.freq, Freq > 1)
 
@@ -50,9 +50,9 @@ compound.t10 <- compound.t10[order(compound.t10$name, compound.t10$conc),]
 compound.t10 <- cbind(compound.t10, sum.t)
 
 # Print with colors to xlsx for Bessie
-cols <- length(compound.t10)
+cols <- length(compound.t10) - 1
 sheetname <- "coumpound_t10"
-write.xlsx(compound.t10, "./out_tables.xlsx", sheetName=sheetname)
+write.xlsx(compound.t10, "./out_tables.xlsx", sheetName=sheetname, row.names = F)
 file <- "out_tables.xlsx"
 # but we want to highlight cells if value is equal to a transporter
 wb <- loadWorkbook(file)              # load workbook
@@ -61,10 +61,10 @@ cs <- CellStyle(wb, fill=fo)        # create cell style
 sheets <- getSheets(wb)               # get all sheets
 sheet <- sheets[[sheetname]]          # get specific sheet
 # get rows
-rows <- getRows(sheet, rowIndex=2:nrow(compound.t10)+1)
+rows <- getRows(sheet, rowIndex=1:nrow(compound.t10)+1)
 # 1st row is headers
 # get cells
-cells <- getCells(rows, colIndex = 6:cols)
+cells <- getCells(rows, colIndex = 5:cols)
 # extract the cell value
 values <- lapply(cells, getCellValue)
 highlight <- NULL
@@ -72,8 +72,14 @@ for (i in names(values)) {
   x <- as.factor(values[i])
   if (x %in% transporters$V1 && !is.na(x)) {
     highlight <- c(highlight, i)
-  }     
+  }
 }
-lapply(names(cells[highlight]), function(i) setCellStyle(cells[[i]], cs))
+lapply(names(cells[highlight]), function(ii) setCellStyle(cells[[ii]], cs))
 saveWorkbook(wb, file)
+#####################################################################
+
+####################### DOSES ANALYSIS ##############################
+multiple.doses <- subset(compound.t10, compound.t10$name %in% doses$name, select = c("Screen.ID", "name", "conc", "unit", "t"))
+sheetname = "multiple_doses"
+write.xlsx(multiple.doses, "./out_tables.xlsx", sheetName=sheetname, row.names = F, append = TRUE)
 #####################################################################
